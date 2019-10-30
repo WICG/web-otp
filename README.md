@@ -158,11 +158,24 @@ So, working backwards from where we believe we want to be, the declarative autof
 
 In this formulation, browsers provide an imperative API to request the contents of an incoming SMS. Here is one possible formulation / shape, based on Android’s [SMS Retriever API](https://developers.google.com/identity/sms-retriever/overview): 
 
-```javascript
+
+```ts
+/* TypeScript definition */
+declare global {
+  interface Navigator {
+    sms: {
+      receive(abortSignal?: AbortController): Promise<{ content: string }>;
+    };
+  }
+}
+
+/* Feature detection */
 if (navigator.sms) {
   alert("feature not available :(");
   return;
 }
+
+/* API Consumption */
 try {
   let {content} = await navigator.sms.receive();
   alert("sms received! " + content);
@@ -348,7 +361,7 @@ Several identity providers such as Facebook (Account Kit), Truecaller, and other
 
 Provide a higher level API for obtaining OTP, which could be provided by a variety of transport mechanisms (email, time-based authenticator apps running on the device, not just SMS)
 
-```
+```js
 // This is just a draft/example of what a API could look like.
 let otp = await navigator.credentials.get({otp: true});
 verify(otp);
