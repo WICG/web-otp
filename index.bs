@@ -343,34 +343,18 @@ OTP.
 
 <xmp class="idl">
     dictionary OTPCredentialRequestOptions {
-      sequence<OTPCredentialTransportType> transport = [];
+      sequence<DOMString> transport = [];
     };
 </xmp>
 
 <div dfn-type="dict-member" dfn-for="OTPCredentialRequestOptions">
     :   <dfn>transport</dfn>
-    ::  This OPTIONAL member contains a hint as to how the [=server=] might receive the OTP.
-        The values SHOULD be members of {{OTPCredentialTransportType}} but [=client platforms=] MUST ignore unknown values.
+    ::  This OPTIONAL member hints as to how the [=server=] might send
+        the OTP.
+        The sequence may contain any number [=transport values=] as hints. The
+        [=User Agent=] MUST ignore unknown or unsupported values.
 </div>
 
-<!-- ============================================================ -->
-## `OTPCredentialTransportType` ## {#enum-transport}
-<!-- ============================================================ -->
-
-<xmp class="idl">
-    enum OTPCredentialTransportType {
-        "sms",
-    };
-</xmp>
-
-<div dfn-type="enum-value" dfn-for="OTPCredentialTransportType">
-    User Agents may implement various transport mechanisms to allow
-    the retrieval of OTPs. This enumeration defines hints as to how
-    user agents may communicate with the transport mechanisms. 
-
-    :   <dfn>sms</dfn>
-    ::  Indicates that the OTP is expected to arrive via SMS.
-</div>
 
 <!-- ============================================================ -->
 # Transports # {#transports}
@@ -379,11 +363,21 @@ OTP.
 We expect a variety of different transport mechanisms to enable OTPs
 to be received, most notably via SMS, email and hardware devices.
 
-Each of these transport mechanisms will need their own conventions on
-how to provide OTPs to the browser.
+Each of these transport mechanisms is uniquely identified with a <dfn>transport
+value</dfn> and will need their own conventions on how to provide OTPs to the
+browser. In this draft, we only specify one such transport: [=sms=], and
+leave the API surface to be extensible to any number of transports.
 
-In this draft, we leave the API surface to be extensible to any number
-of transports.
+The following [=transport values=] are valid:
+<div>
+    :   <dfn type="value">sms</dfn>
+    ::  Indicates that the OTP is expected to arrive via SMS.
+        [[#transports-sms]] discusses conventions related to this transport.
+</div>
+
+
+User Agents may implement any subset of transport mechanisms to allow the
+retrieval of OTPs.
 
 <!-- ============================================================ -->
 ## SMS ## {#transports-sms}
@@ -394,7 +388,8 @@ SMS messages, allowing developers to verify phone numbers. They
 are typically sent embedded in an SMS message, which gets copied and
 pasted by users.
 
-[[sms-one-time-codes]] defines [=origin-bound one-time code messages=], a format for sending OTPs over SMS and associating them with origins.
+[[sms-one-time-codes]] defines [=origin-bound one-time code messages=],
+a format for sending OTPs over SMS and associating them with origins.
 
 <!-- ============================================================ -->
 # Security # {#security}

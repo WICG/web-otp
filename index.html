@@ -1222,10 +1222,10 @@ Possible extra rowspan handling
 	}
 </style>
   <link href="https://www.w3.org/StyleSheets/TR/2016/cg-draft" rel="stylesheet">
-  <meta content="Bikeshed version 2891b22e, updated Thu Mar 26 15:21:43 2020 -0700" name="generator">
+  <meta content="Bikeshed version eb52c04d, updated Fri Mar 20 17:26:11 2020 -0700" name="generator">
   <link href="http://wicg.github.io/WebOTP" rel="canonical">
   <link href="logo-otp.png" rel="icon">
-  <meta content="5e77cf1cead149a8222a8f00d3ed688135ef1026" name="document-revision">
+  <meta content="da0debcb8d072a96aaa481be29182c665f446567" name="document-revision">
 <style>
 dl.domintro dt {
     font-family: Menlo, Consolas, "DejaVu Sans Mono", Monaco, monospace;
@@ -1486,7 +1486,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Web OTP API</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Draft Community Group Report, <time class="dt-updated" datetime="2020-04-06">6 April 2020</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Draft Community Group Report, <time class="dt-updated" datetime="2020-07-13">13 July 2020</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1542,7 +1542,6 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
        </ol>
       <li><a href="#CredentialRequestOptions"><span class="secno">2.2</span> <span class="content"><code>CredentialRequestOptions</code></span></a>
       <li><a href="#OTPCredentialRequestOptions"><span class="secno">2.3</span> <span class="content"><code>OTPCredentialRequestOptions</code></span></a>
-      <li><a href="#enum-transport"><span class="secno">2.4</span> <span class="content"><code>OTPCredentialTransportType</code></span></a>
      </ol>
     <li>
      <a href="#transports"><span class="secno">3</span> <span class="content">Transports</span></a>
@@ -1609,7 +1608,7 @@ OTPs to the client via the requested transport mechanisms. For each
 of these transport mechanism, a server side convention is set in
 place to guarantee that the OTP is delivered safely and
 programatically.</p>
-   <p>For SMS, for example, servers should send <a data-link-type="dfn">origin-bound one-time code messages</a> to clients. <a data-link-type="biblio" href="#biblio-sms-one-time-codes">[sms-one-time-codes]</a></p>
+   <p>For SMS, for example, servers should send <a data-link-type="dfn" href="https://wicg.github.io/sms-one-time-codes/#origin-bound-one-time-code-message" id="ref-for-origin-bound-one-time-code-message">origin-bound one-time code messages</a> to clients. <a data-link-type="biblio" href="#biblio-sms-one-time-codes">[sms-one-time-codes]</a></p>
    <h3 class="heading settled" data-level="1.3" id="intro-feature-detection"><span class="secno">1.3. </span><span class="content">Feature Detection</span><a class="self-link" href="#intro-feature-detection"></a></h3>
    <p>Not all user agents necessarily need to implement the WebOTP API at
 the exact same moment in time, so websites need a mechanism to detect
@@ -1675,17 +1674,17 @@ needs to be cancelled so that the user isn’t bothered with a
 permission prompt that isn’t relevant anymore.</p>
    <p>To facilitate that, an abort controller can be passed to abort the
 request:</p>
-   <div class="example" id="example-26e0dca4">
-    <a class="self-link" href="#example-26e0dca4"></a> 
-<pre class="language-js highlight"><c- a>let</c-> signal <c- o>=</c-> <c- k>new</c-> AbortController<c- p>();</c->
+   <div class="example" id="example-fc08bd4b">
+    <a class="self-link" href="#example-fc08bd4b"></a> 
+<pre class="language-js highlight"><c- kr>const</c-> abort <c- o>=</c-> <c- k>new</c-> AbortController<c- p>();</c->
 
 setTimeout<c- p>(()</c-> <c- p>=></c-> <c- p>{</c->
   <c- c1>// abort after two minutes</c->
-  signal<c- p>.</c->abort<c- p>();</c->
+  abort<c- p>.</c->abort<c- p>();</c->
 <c- p>},</c-> <c- mi>2</c-> <c- o>*</c-> <c- mi>60</c-> <c- o>*</c-> <c- mi>1000</c-><c- p>);</c->
   
 <c- a>let</c-> <c- p>{</c->code<c- p>,</c-> type<c- p>}</c-> <c- o>=</c-> await navigator<c- p>.</c->credentials<c- p>.</c->get<c- p>({</c->
-  abort<c- o>:</c-> signal<c- p>,</c->
+  signal<c- o>:</c-> abort<c- p>.</c->signal<c- p>,</c->
   otp<c- o>:</c-> <c- p>{</c->
     transport<c- o>:</c-> <c- p>[</c-><c- u>"sms"</c-><c- p>]</c->
   <c- p>}</c->
@@ -1782,45 +1781,42 @@ this document extends the <code class="idl"><a data-link-type="idl" href="https:
    <p>The <code class="idl"><a data-link-type="idl" href="#dictdef-otpcredentialrequestoptions" id="ref-for-dictdef-otpcredentialrequestoptions③">OTPCredentialRequestOptions</a></code> dictionary supplies <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/webappsec-credential-management/#dom-credentialscontainer-get" id="ref-for-dom-credentialscontainer-get⑥">navigator.credentials.get()</a></code> with the data it needs to retrieve an
 OTP.</p>
 <pre class="idl highlight def"><c- b>dictionary</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="dictionary" data-export id="dictdef-otpcredentialrequestoptions"><code><c- g>OTPCredentialRequestOptions</c-></code></dfn> {
-  <c- b>sequence</c->&lt;<a class="n" data-link-type="idl-name" href="#enumdef-otpcredentialtransporttype" id="ref-for-enumdef-otpcredentialtransporttype"><c- n>OTPCredentialTransportType</c-></a>> <a class="idl-code" data-default="[]" data-link-type="dict-member" data-type="sequence<OTPCredentialTransportType> " href="#dom-otpcredentialrequestoptions-transport" id="ref-for-dom-otpcredentialrequestoptions-transport"><c- g>transport</c-></a> = [];
+  <c- b>sequence</c->&lt;<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString②"><c- b>DOMString</c-></a>> <a class="idl-code" data-default="[]" data-link-type="dict-member" data-type="sequence<DOMString> " href="#dom-otpcredentialrequestoptions-transport" id="ref-for-dom-otpcredentialrequestoptions-transport"><c- g>transport</c-></a> = [];
 };
 </pre>
    <div>
     <dl>
-     <dt data-md><dfn class="dfn-paneled idl-code" data-dfn-for="OTPCredentialRequestOptions" data-dfn-type="dict-member" data-export id="dom-otpcredentialrequestoptions-transport"><code>transport</code></dfn>, <span> of type sequence&lt;<a data-link-type="idl-name" href="#enumdef-otpcredentialtransporttype" id="ref-for-enumdef-otpcredentialtransporttype①">OTPCredentialTransportType</a>>, defaulting to <code>[]</code></span>
+     <dt data-md><dfn class="dfn-paneled idl-code" data-dfn-for="OTPCredentialRequestOptions" data-dfn-type="dict-member" data-export id="dom-otpcredentialrequestoptions-transport"><code>transport</code></dfn>, <span> of type sequence&lt;<a data-link-type="idl-name" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString③">DOMString</a>>, defaulting to <code>[]</code></span>
      <dd data-md>
-      <p>This OPTIONAL member contains a hint as to how the <a data-link-type="dfn">server</a> might receive the OTP.
-The values SHOULD be members of <code class="idl"><a data-link-type="idl" href="#enumdef-otpcredentialtransporttype" id="ref-for-enumdef-otpcredentialtransporttype②">OTPCredentialTransportType</a></code> but <a data-link-type="dfn">client platforms</a> MUST ignore unknown values.</p>
-    </dl>
-   </div>
-   <h3 class="heading settled" data-level="2.4" id="enum-transport"><span class="secno">2.4. </span><span class="content"><code>OTPCredentialTransportType</code></span><a class="self-link" href="#enum-transport"></a></h3>
-<pre class="idl highlight def"><c- b>enum</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="enum" data-export id="enumdef-otpcredentialtransporttype"><code><c- g>OTPCredentialTransportType</c-></code></dfn> {
-    <a class="idl-code" data-link-type="enum-value" href="#dom-otpcredentialtransporttype-sms" id="ref-for-dom-otpcredentialtransporttype-sms"><c- s>"sms"</c-></a>,
-};
-</pre>
-   <div>
-     User Agents may implement various transport mechanisms to allow
-    the retrieval of OTPs. This enumeration defines hints as to how
-    user agents may communicate with the transport mechanisms. 
-    <dl>
-     <dt data-md><dfn class="dfn-paneled idl-code" data-dfn-for="OTPCredentialTransportType" data-dfn-type="enum-value" data-export data-lt="&quot;sms&quot;|sms" id="dom-otpcredentialtransporttype-sms"><code>sms</code></dfn>
-     <dd data-md>
-      <p>Indicates that the OTP is expected to arrive via SMS.</p>
+      <p>This OPTIONAL member hints as to how the <a data-link-type="dfn">server</a> might send
+the OTP.
+The sequence may contain any number <a data-link-type="dfn" href="#transport-value" id="ref-for-transport-value">transport values</a> as hints. The <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#user-agent" id="ref-for-user-agent">User Agent</a> MUST ignore unknown or unsupported values.</p>
     </dl>
    </div>
    <h2 class="heading settled" data-level="3" id="transports"><span class="secno">3. </span><span class="content">Transports</span><a class="self-link" href="#transports"></a></h2>
    <p>We expect a variety of different transport mechanisms to enable OTPs
 to be received, most notably via SMS, email and hardware devices.</p>
-   <p>Each of these transport mechanisms will need their own conventions on
-how to provide OTPs to the browser.</p>
-   <p>In this draft, we leave the API surface to be extensible to any number
-of transports.</p>
+   <p>Each of these transport mechanisms is uniquely identified with a <dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="transport value" data-noexport id="transport-value">transport
+value</dfn> and will need their own conventions on how to provide OTPs to the
+browser. In this draft, we only specify one such transport: <a data-link-type="dfn" href="#sms" id="ref-for-sms">sms</a>, and
+leave the API surface to be extensible to any number of transports.</p>
+   <p>The following <a data-link-type="dfn" href="#transport-value" id="ref-for-transport-value①">transport values</a> are valid:</p>
+   <div>
+    <dl>
+     <dt data-md><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="sms" type="value">sms</dfn>
+     <dd data-md>
+      <p>Indicates that the OTP is expected to arrive via SMS. <a href="#transports-sms">§ 3.1 SMS</a> discusses conventions related to this transport.</p>
+    </dl>
+   </div>
+   <p>User Agents may implement any subset of transport mechanisms to allow the
+retrieval of OTPs.</p>
    <h3 class="heading settled" data-level="3.1" id="transports-sms"><span class="secno">3.1. </span><span class="content">SMS</span><a class="self-link" href="#transports-sms"></a></h3>
    <p>One of the most commonly used transport mechanisms for OTP is via
 SMS messages, allowing developers to verify phone numbers. They
 are typically sent embedded in an SMS message, which gets copied and
 pasted by users.</p>
-   <p><a data-link-type="biblio" href="#biblio-sms-one-time-codes">[sms-one-time-codes]</a> defines <a data-link-type="dfn">origin-bound one-time code messages</a>, a format for sending OTPs over SMS and associating them with origins.</p>
+   <p><a data-link-type="biblio" href="#biblio-sms-one-time-codes">[sms-one-time-codes]</a> defines <a data-link-type="dfn" href="https://wicg.github.io/sms-one-time-codes/#origin-bound-one-time-code-message" id="ref-for-origin-bound-one-time-code-message①">origin-bound one-time code messages</a>,
+a format for sending OTPs over SMS and associating them with origins.</p>
    <h2 class="heading settled" data-level="4" id="security"><span class="secno">4. </span><span class="content">Security</span><a class="self-link" href="#security"></a></h2>
    <p>From a security perspective, there are two considerations with this
 API:</p>
@@ -1854,14 +1850,14 @@ entity its sending the SMS).</p>
    <p>Each transport mechanism is responsible for guaranteeing that the
 browser has enough information to route the OTP appropriately to the
 intended origin.</p>
-   <p>For example, <a data-link-type="dfn">origin-bound one-time code messages</a> explicitly
+   <p>For example, <a data-link-type="dfn" href="https://wicg.github.io/sms-one-time-codes/#origin-bound-one-time-code-message" id="ref-for-origin-bound-one-time-code-message②">origin-bound one-time code messages</a> explicitly
 identify the origin on which the OTP can be used.</p>
    <p>The addressing scheme must be enforced by the agent to guarantee that
 it gets routed appropriately.</p>
    <h3 class="heading settled" data-level="4.3" id="security-tampering"><span class="secno">4.3. </span><span class="content">Tampering</span><a class="self-link" href="#security-tampering"></a></h3>
    <p>There isn’t any built-in cryptographic guarantee that the OTP that is
 being handed back by this API hasn’t been tampered with. For example,
-an attacker could send an <a data-link-type="dfn">origin-bound one-time code message</a> to the
+an attacker could send an <a data-link-type="dfn" href="https://wicg.github.io/sms-one-time-codes/#origin-bound-one-time-code-message" id="ref-for-origin-bound-one-time-code-message③">origin-bound one-time code message</a> to the
 user’s phone with an arbitrary origin which the agent happilly passes
 back to the requesting call.</p>
    <div class="example" id="example-2de70cc1">
@@ -1897,7 +1893,7 @@ numbers.</p>
 websites trying to find a <strong>very</strong> specific user accross all of its user
 base. In this attack, if left unattended, a website can use this API to
 try to find a <strong>specific</strong> user that owns a <strong>specific</strong> phone number by
-sending all / some (depending on the confidence level) of its users an <a data-link-type="dfn">origin-bound one-time code message</a> and detecting when one is received.</p>
+sending all / some (depending on the confidence level) of its users an <a data-link-type="dfn" href="https://wicg.github.io/sms-one-time-codes/#origin-bound-one-time-code-message" id="ref-for-origin-bound-one-time-code-message④">origin-bound one-time code message</a> and detecting when one is received.</p>
    <p>Notably, this API doesn’t help with the <strong>acquisition</strong> of the personal
 information, but rather with its <strong>verification</strong>. That is, this API helps <strong>verifying</strong> whether the user owns a specific phone number, but doesn’t
 help acquiring the phone number in the first place (it assumes that the
@@ -2076,10 +2072,9 @@ authoring advice.</p>
    <li><a href="#dom-credentialrequestoptions-otp">otp</a><span>, in §2.2</span>
    <li><a href="#otpcredential">OTPCredential</a><span>, in §2.1</span>
    <li><a href="#dictdef-otpcredentialrequestoptions">OTPCredentialRequestOptions</a><span>, in §2.3</span>
-   <li><a href="#enumdef-otpcredentialtransporttype">OTPCredentialTransportType</a><span>, in §2.4</span>
-   <li><a href="#dom-otpcredentialtransporttype-sms">"sms"</a><span>, in §2.4</span>
-   <li><a href="#dom-otpcredentialtransporttype-sms">sms</a><span>, in §2.4</span>
+   <li><a href="#sms">sms</a><span>, in §3</span>
    <li><a href="#dom-otpcredentialrequestoptions-transport">transport</a><span>, in §2.3</span>
+   <li><a href="#transport-value">transport value</a><span>, in §3</span>
    <li><a href="#dom-otpcredential-type-slot">[[type]]</a><span>, in §2.1</span>
   </ul>
   <aside class="dfn-panel" data-for="term-for-credential">
@@ -2209,6 +2204,22 @@ authoring advice.</p>
     <li><a href="#ref-for-relevant-settings-object">2.1.1. The [[DiscoverFromExternalSource]](origin, options, sameOriginWithAncestors) Method</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-user-agent">
+   <a href="https://infra.spec.whatwg.org/#user-agent">https://infra.spec.whatwg.org/#user-agent</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-user-agent">2.3. OTPCredentialRequestOptions</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-origin-bound-one-time-code-message">
+   <a href="https://wicg.github.io/sms-one-time-codes/#origin-bound-one-time-code-message">https://wicg.github.io/sms-one-time-codes/#origin-bound-one-time-code-message</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-origin-bound-one-time-code-message">1.2. The server side API</a>
+    <li><a href="#ref-for-origin-bound-one-time-code-message①">3.1. SMS</a>
+    <li><a href="#ref-for-origin-bound-one-time-code-message②">4.2. Addressing</a>
+    <li><a href="#ref-for-origin-bound-one-time-code-message③">4.3. Tampering</a>
+    <li><a href="#ref-for-origin-bound-one-time-code-message④">5. Privacy</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-empty-host">
    <a href="https://url.spec.whatwg.org/#empty-host">https://url.spec.whatwg.org/#empty-host</a><b>Referenced in:</b>
    <ul>
@@ -2249,6 +2260,7 @@ authoring advice.</p>
    <a href="https://heycam.github.io/webidl/#idl-DOMString">https://heycam.github.io/webidl/#idl-DOMString</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-idl-DOMString">2.1. The OTPCredential Interface</a> <a href="#ref-for-idl-DOMString①">(2)</a>
+    <li><a href="#ref-for-idl-DOMString②">2.3. OTPCredentialRequestOptions</a> <a href="#ref-for-idl-DOMString③">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-Exposed">
@@ -2326,6 +2338,16 @@ authoring advice.</p>
      <li><span class="dfn-paneled" id="term-for-relevant-settings-object" style="color:initial">relevant settings object</span>
     </ul>
    <li>
+    <a data-link-type="biblio">[INFRA]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-user-agent" style="color:initial">user agent</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[sms-one-time-codes]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-origin-bound-one-time-code-message" style="color:initial">origin-bound one-time code message</span>
+    </ul>
+   <li>
     <a data-link-type="biblio">[URL]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-empty-host" style="color:initial">empty host</span>
@@ -2358,15 +2380,17 @@ authoring advice.</p>
    <dd>Anne van Kesteren. <a href="https://fetch.spec.whatwg.org/">Fetch Standard</a>. Living Standard. URL: <a href="https://fetch.spec.whatwg.org/">https://fetch.spec.whatwg.org/</a>
    <dt id="biblio-html">[HTML]
    <dd>Anne van Kesteren; et al. <a href="https://html.spec.whatwg.org/multipage/">HTML Standard</a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
+   <dt id="biblio-infra">[INFRA]
+   <dd>Anne van Kesteren; Domenic Denicola. <a href="https://infra.spec.whatwg.org/">Infra Standard</a>. Living Standard. URL: <a href="https://infra.spec.whatwg.org/">https://infra.spec.whatwg.org/</a>
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a>
+   <dt id="biblio-sms-one-time-codes">[SMS-ONE-TIME-CODES]
+   <dd><a href="https://wicg.github.io/sms-one-time-codes/">Origin-bound one-time codes delivered via SMS</a>. cg-draft. URL: <a href="https://wicg.github.io/sms-one-time-codes/">https://wicg.github.io/sms-one-time-codes/</a>
    <dt id="biblio-webidl">[WebIDL]
    <dd>Boris Zbarsky. <a href="https://heycam.github.io/webidl/">Web IDL</a>. 15 December 2016. ED. URL: <a href="https://heycam.github.io/webidl/">https://heycam.github.io/webidl/</a>
   </dl>
   <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
   <dl>
-   <dt id="biblio-sms-one-time-codes">[SMS-ONE-TIME-CODES]
-   <dd><a href="https://wicg.github.io/sms-one-time-codes/">Origin-bound one-time codes delivered via SMS</a>. cg-draft. URL: <a href="https://wicg.github.io/sms-one-time-codes/">https://wicg.github.io/sms-one-time-codes/</a>
    <dt id="biblio-url">[URL]
    <dd>Anne van Kesteren. <a href="https://url.spec.whatwg.org/">URL Standard</a>. Living Standard. URL: <a href="https://url.spec.whatwg.org/">https://url.spec.whatwg.org/</a>
   </dl>
@@ -2381,11 +2405,7 @@ authoring advice.</p>
 };
 
 <c- b>dictionary</c-> <a href="#dictdef-otpcredentialrequestoptions"><code><c- g>OTPCredentialRequestOptions</c-></code></a> {
-  <c- b>sequence</c->&lt;<a class="n" data-link-type="idl-name" href="#enumdef-otpcredentialtransporttype"><c- n>OTPCredentialTransportType</c-></a>> <a class="idl-code" data-default="[]" data-link-type="dict-member" data-type="sequence<OTPCredentialTransportType> " href="#dom-otpcredentialrequestoptions-transport"><c- g>transport</c-></a> = [];
-};
-
-<c- b>enum</c-> <a href="#enumdef-otpcredentialtransporttype"><code><c- g>OTPCredentialTransportType</c-></code></a> {
-    <a class="idl-code" data-link-type="enum-value" href="#dom-otpcredentialtransporttype-sms"><c- s>"sms"</c-></a>,
+  <c- b>sequence</c->&lt;<a class="idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-DOMString"><c- b>DOMString</c-></a>> <a class="idl-code" data-default="[]" data-link-type="dict-member" data-type="sequence<DOMString> " href="#dom-otpcredentialrequestoptions-transport"><c- g>transport</c-></a> = [];
 };
 
 </pre>
@@ -2430,16 +2450,17 @@ authoring advice.</p>
     <li><a href="#ref-for-dom-otpcredentialrequestoptions-transport">2.3. OTPCredentialRequestOptions</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="enumdef-otpcredentialtransporttype">
-   <b><a href="#enumdef-otpcredentialtransporttype">#enumdef-otpcredentialtransporttype</a></b><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="transport-value">
+   <b><a href="#transport-value">#transport-value</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-enumdef-otpcredentialtransporttype">2.3. OTPCredentialRequestOptions</a> <a href="#ref-for-enumdef-otpcredentialtransporttype①">(2)</a> <a href="#ref-for-enumdef-otpcredentialtransporttype②">(3)</a>
+    <li><a href="#ref-for-transport-value">2.3. OTPCredentialRequestOptions</a>
+    <li><a href="#ref-for-transport-value①">3. Transports</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="dom-otpcredentialtransporttype-sms">
-   <b><a href="#dom-otpcredentialtransporttype-sms">#dom-otpcredentialtransporttype-sms</a></b><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="sms">
+   <b><a href="#sms">#sms</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dom-otpcredentialtransporttype-sms">2.4. OTPCredentialTransportType</a>
+    <li><a href="#ref-for-sms">3. Transports</a>
    </ul>
   </aside>
 <script>/* script-dfn-panel */
