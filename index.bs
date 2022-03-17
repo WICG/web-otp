@@ -327,7 +327,7 @@ When this method is invoked, the user agent MUST execute the following algorithm
         in recognition of various issues with using direct IP address identification in concert with
         PKI-based security.
 1. If the <code>|options|.{{CredentialRequestOptions/signal}}</code> is [=present=] and
-    [=AbortSignal/aborted=], return the <code>|options|.{{CredentialRequestOptions/signal}}</code>'s
+    [=AbortSignal/aborted=], throw the <code>|options|.{{CredentialRequestOptions/signal}}</code>'s
     [=AbortSignal/abort reason=] and terminate this algorithm.
 1. TODO(goto): figure out how to connect the dots here with the transport algorithms.
 
