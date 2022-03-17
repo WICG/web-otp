@@ -316,9 +316,9 @@ When this method is invoked, the user agent MUST execute the following algorithm
 1. Assert: <code>|options|.{{CredentialRequestOptions/otp}}</code> is [=present=].
 1. Let |options| be the value of <code>|options|.{{CredentialRequestOptions/otp}}</code>.
 1. Let |callerOrigin| be {{OTPCredential/[[DiscoverFromExternalSource]](origin, options, sameOriginWithAncestors)/origin}}.
-    If |callerOrigin| is an [=opaque origin=], return a {{DOMException}} whose name is "{{NotAllowedError}}", and terminate this algorithm.
+    If |callerOrigin| is an [=opaque origin=], throw a {{DOMException}} whose name is "{{NotAllowedError}}", and terminate this algorithm.
 1. Let |effectiveDomain| be the |callerOrigin|'s [=effective domain=].
-    If [=effective domain=] is not a [=valid domain=], then return a
+    If [=effective domain=] is not a [=valid domain=], then throw a
     {{DOMException}} whose name is "{{SecurityError}}" and terminate this algorithm.
 
         Note: An [=effective domain=] may resolve to a [=host=], which can be represented in various manners,
