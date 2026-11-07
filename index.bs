@@ -409,7 +409,7 @@ the foregoing methods: attempting to do so will [return an error](https://www.w3
 <!-- ============================================================ -->
 
 The [=WebOTP API=] is available in inner frames when the origins match but it's disabled by default in cross-origin <{iframe}>s.
-To override this default policy and indicate that a cross-origin <{iframe}> is allowed to invoke the [=WebOTP API=]'s {{[[DiscoverFromExternalSource]](origin, options, sameOriginWithAncestors)}} method, specify the <{iframe/allow}> attribute on the <{iframe}> element and include the <code>[=otp-credentials-feature|otp-credentialst=]</code> feature-identifier token in the <{iframe/allow}> attribute's value.
+To override this default policy and indicate that a cross-origin <{iframe}> is allowed to invoke the [=WebOTP API=]'s {{[[DiscoverFromExternalSource]](origin, options, sameOriginWithAncestors)}} method, specify the <{iframe/allow}> attribute on the <{iframe}> element and include the <code>[=otp-credentials-feature|otp-credentials=]</code> feature-identifier token in the <{iframe/allow}> attribute's value.
 
 [=[RPS]=] utilizing the WebOTP API in an embedded context should review [[#sctn-seccons-visibility]] regarding [=UI redressing=] and its possible mitigations.
 
