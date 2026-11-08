@@ -288,7 +288,7 @@ This method is called every time <code><a idl for="CredentialsContainer" lt="get
 
 This [=internal method=] accepts three arguments:
 
-<dl dfn-type="argument" dfn-for="PublicKeyCredential/[[DiscoverFromExternalSource]](origin, options, sameOriginWithAncestors)">
+<dl dfn-type="argument" dfn-for="OTPCredential/[[DiscoverFromExternalSource]](origin, options, sameOriginWithAncestors)">
 
     :   <dfn>origin</dfn>
     ::  This argument is the [=relevant settings object=]'s [=environment settings object/origin=], as determined by the
